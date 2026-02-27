@@ -1,26 +1,50 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import Layout from "./components/Layout";
+import ProductList from "./components/ProductList";
+import Cart from "./components/Cart";
+import { useProductsFeed } from "./hooks/useProducts";
+import { useCart } from "./hooks/useCart";
 
-function App() {
+export default function App() {
+  const { records, loadingState, errorState } = useProductsFeed();
+
+  const {
+    cartState,
+    drawerOpen,
+    setDrawerOpen,
+    addItem,
+    incrementItem,
+    decrementItem,
+    totalUnits,
+    totalPrice
+  } = useCart();
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Layout
+        totalItems={totalUnits}
+        onCartClick={() => setDrawerOpen(true)}
+      >
+        {loadingState && <p>Loading...</p>}
+        {errorState && <p>{errorState}</p>}
+        {!loadingState && !errorState && (
+          <ProductList
+            items={records}
+            cartState={cartState}
+            onAdd={addItem}
+            onIncrement={incrementItem}
+            onDecrement={decrementItem}
+          />
+        )}
+      </Layout>
+
+      <Cart
+        openFlag={drawerOpen}
+        onCloseDrawer={() => setDrawerOpen(false)}
+        cartState={cartState}
+        totalPrice={totalPrice}
+        onIncrement={incrementItem}
+        onDecrement={decrementItem}
+      />
+    </>
   );
 }
-
-export default App;
