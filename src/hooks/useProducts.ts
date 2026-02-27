@@ -7,7 +7,7 @@ export function useProductsFeed() {
   const [errorState, setErrorState] = useState<string | null>(null);
 
   useEffect(() => {
-    fetch("https://equalexperts.github.io/frontend-take-home-test-data/products.json")
+    fetch("https://equalexperts.github.io/frontend-take-home-test-data/products.json") // goes into .env file
       .then((res) => {
         if (!res.ok) {
           throw new Error("Failed to fetch products");

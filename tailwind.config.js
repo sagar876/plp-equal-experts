@@ -6,7 +6,8 @@ module.exports = {
     theme: {
       extend: {
         colors: {
-          brandRed: "#E60028"
+            header: "#2C3234",
+            stone: "#F5F5F4", 
         }
       }
     },
