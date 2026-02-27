@@ -49,7 +49,7 @@ export default function Cart({
         role="dialog"
         aria-modal="true"
         aria-label="Shopping cart"
-        className={`fixed top-0 right-0 h-full w-80 bg-white shadow-lg transform transition-transform ${
+        className={`fixed top-[72px] right-0 h-full w-80 bg-white shadow-lg transform transition-transform ${
           openFlag ? "translate-x-0" : "translate-x-full"
         }`}
       >

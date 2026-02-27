@@ -2,15 +2,11 @@ import { ReactNode } from "react";
 
 interface Props {
   children: ReactNode;
-  totalItems: number;
   onCartClick: () => void;
+  totalItems: number;
 }
 
-export default function Layout({
-  children,
-  totalItems,
-  onCartClick
-}: Props) {
+export default function Layout({ children, onCartClick, totalItems }: Props) {
   return (
     <div className="min-h-screen bg-white">
       <header
@@ -32,8 +28,8 @@ export default function Layout({
       </header>
 
       <main
-        role="main"
         className="max-w-6xl mx-auto px-6 py-8"
+        role="main"
       >
         {children}
       </main>
