@@ -1,12 +1,4 @@
-import { ProductNode, CartItem } from "../types/product";
-
-interface Props {
-  productUnit: ProductNode;
-  cartItems: CartItem[];
-  onAdd: (item: ProductNode) => void;
-  onIncrease: (productId: string) => void;
-  onDecrease: (productId: string) => void;
-}
+import { ProductCardProps } from "../types/product";
 
 export default function ProductCard({
   productUnit,
@@ -14,7 +6,7 @@ export default function ProductCard({
   onAdd,
   onIncrease,
   onDecrease
-}: Props) {
+}: ProductCardProps) {
   const existing = cartItems.find(
     item => item.id === productUnit.id
   );

@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { CartProps } from "../types/cart";
 
 
@@ -14,6 +13,7 @@ export default function Cart({
   return (
     <>
       <div
+        data-testid="cart-overlay"
         onClick={onClose}
         className={`fixed inset-0 bg-black bg-opacity-40 ${
           isOpen ? "block" : "hidden"

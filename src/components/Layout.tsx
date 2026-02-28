@@ -18,8 +18,12 @@ export default function Layout({
         className="bg-secondary text-white px-6 py-4 flex justify-between"
         role="banner"
       >
-        <h1 className="text-lg font-semibold flex items-center">
-          Equal Experts Store
+        <h1 className="flex items-center">
+          <img
+            src="/2024-Logo.svg"
+            alt="Equal Experts Store"
+            className="h-8 w-auto"
+          />
         </h1>
 
         <button

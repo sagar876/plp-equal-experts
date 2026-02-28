@@ -1,13 +1,7 @@
 import ProductCard from "./ProductCard";
-import { ProductNode, CartItem } from "../types/product";
+import { ProductNode, ProductListProps } from "../types/product";
 
-interface Props {
-  items: ProductNode[];
-  cartItems: CartItem[];
-  onAdd: (item: ProductNode) => void;
-  onIncrease: (productId: string) => void;
-  onDecrease: (productId: string) => void;
-}
+
 
 export default function ProductList({
   items,
@@ -15,7 +9,7 @@ export default function ProductList({
   onAdd,
   onIncrease,
   onDecrease
-}: Props) {
+}: ProductListProps) {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 gap-6">
       {items.map((node) => (
