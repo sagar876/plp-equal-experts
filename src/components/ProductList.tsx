@@ -1,31 +1,31 @@
 import ProductCard from "./ProductCard";
-import { ProductNode, CartRegistry } from "../types/product";
+import { ProductNode, CartItem } from "../types/product";
 
 interface Props {
   items: ProductNode[];
-  cartState: CartRegistry;
+  cartItems: CartItem[];
   onAdd: (item: ProductNode) => void;
-  onIncrement: (id: string) => void;
-  onDecrement: (id: string) => void;
+  onIncrease: (productId: string) => void;
+  onDecrease: (productId: string) => void;
 }
 
 export default function ProductList({
   items,
-  cartState,
+  cartItems,
   onAdd,
-  onIncrement,
-  onDecrement
+  onIncrease,
+  onDecrease
 }: Props) {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 gap-6">
       {items.map((node) => (
         <ProductCard
           key={node.id}
           productUnit={node}
-          cartState={cartState}
+          cartItems={cartItems}
           onAdd={onAdd}
-          onIncrement={onIncrement}
-          onDecrement={onDecrement}
+          onIncrease={onIncrease}
+          onDecrease={onDecrease}
         />
       ))}
     </div>

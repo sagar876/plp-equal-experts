@@ -10,56 +10,78 @@ const mockProduct = {
 };
 
 describe("useCart", () => {
-  test("adds item to cart", () => {
+  test("adds product to cart", () => {
     const { result } = renderHook(() => useCart());
 
     act(() => {
-      result.current.addItem(mockProduct);
+      result.current.addProductToCart(mockProduct);
     });
 
-    expect(result.current.cartState["1"].quantity).toBe(1);
+    expect(result.current.cartItems.length).toBe(1);
+    expect(result.current.cartItems[0].quantity).toBe(1);
   });
 
-  test("increments quantity if item already exists", () => {
+  test("increases product quantity", () => {
     const { result } = renderHook(() => useCart());
 
     act(() => {
-      result.current.addItem(mockProduct);
-      result.current.incrementItem("1");
+      result.current.addProductToCart(mockProduct);
+      result.current.increaseProductQuantity("1");
     });
 
-    expect(result.current.cartState["1"].quantity).toBe(2);
+    const item = result.current.cartItems.find(
+      item => item.id === "1"
+    );
+
+    expect(item?.quantity).toBe(2);
   });
 
-  test("calculates totalUnits correctly", () => {
+  test("decreases product quantity", () => {
     const { result } = renderHook(() => useCart());
 
     act(() => {
-      result.current.addItem(mockProduct);
-      result.current.incrementItem("1");
+      result.current.addProductToCart(mockProduct);
+      result.current.increaseProductQuantity("1");
+      result.current.decreaseProductQuantity("1");
     });
 
-    expect(result.current.totalUnits).toBe(2);
+    const item = result.current.cartItems.find(
+      item => item.id === "1"
+    );
+
+    expect(item?.quantity).toBe(1);
   });
 
-  test("calculates totalPrice correctly", () => {
+  test("removes product when quantity becomes zero", () => {
     const { result } = renderHook(() => useCart());
 
     act(() => {
-      result.current.addItem(mockProduct);
-      result.current.incrementItem("1");
+      result.current.addProductToCart(mockProduct);
+      result.current.decreaseProductQuantity("1");
     });
 
-    expect(result.current.totalPrice).toBe(20);
+    expect(result.current.cartItems.length).toBe(0);
   });
 
-  test("controls drawer state", () => {
+  test("calculates total units and total price correctly", () => {
     const { result } = renderHook(() => useCart());
 
     act(() => {
-      result.current.setDrawerOpen(true);
+      result.current.addProductToCart(mockProduct);
+      result.current.increaseProductQuantity("1");
     });
 
-    expect(result.current.drawerOpen).toBe(true);
+    expect(result.current.totalUnitsInCart).toBe(2);
+    expect(result.current.totalCartPrice).toBe(20);
+  });
+
+  test("controls cart drawer state", () => {
+    const { result } = renderHook(() => useCart());
+
+    act(() => {
+      result.current.setIsCartDrawerOpen(true);
+    });
+
+    expect(result.current.isCartDrawerOpen).toBe(true);
   });
 });

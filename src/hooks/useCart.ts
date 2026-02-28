@@ -1,87 +1,80 @@
-import { useState } from "react";
-import { ProductNode, CartRegistry } from "../types/product";
+import { useState, useMemo } from "react";
+import { ProductNode, CartItem } from "../types/product";
 
 export function useCart() {
-  const [cartState, setCartState] = useState<CartRegistry>({});
-  const [drawerOpen, setDrawerOpen] = useState(false);
+  const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const [isCartDrawerOpen, setIsCartDrawerOpen] = useState(false);
 
-  const addItem = (product: ProductNode) => {
-    setCartState((prev) => {
-      const existing = prev[product.id];
-
-      if (existing) {
-        return {
-          ...prev,
-          [product.id]: {
-            item: product,
-            quantity: existing.quantity + 1
-          }
-        };
-      }
-
-      return {
-        ...prev,
-        [product.id]: {
-          item: product,
-          quantity: 1
+  const addProductToCart = (product: ProductNode) => {
+    setCartItems((prevCartItems) => {
+        const ifItemExistsInCart = prevCartItems.find(cartItem => cartItem.id === product.id);
+       
+        if(ifItemExistsInCart){
+            return prevCartItems.map(cartItem=> {
+                if(cartItem.id === product.id){
+                    return {
+                        ...cartItem,
+                        quantity: cartItem.quantity + 1
+                    }
+                }
+                return cartItem;
+            })
         }
-      };
+        return [...prevCartItems,{...product, quantity: 1}]
     });
   };
 
-  const incrementItem = (id: string) => {
-    setCartState((prev) => {
-      const existing = prev[id];
-      if (!existing) return prev;
-
-      return {
-        ...prev,
-        [id]: {
-          ...existing,
-          quantity: existing.quantity + 1
-        }
-      };
-    });
+  const increaseProductQuantity = (productId: string) => {
+    setCartItems((prevCartItems) =>
+      prevCartItems.map((cartItem) =>
+        cartItem.id === productId
+          ? {
+              ...cartItem,
+              quantity: cartItem.quantity + 1
+            }
+          : cartItem
+      )
+    );
   };
 
-  const decrementItem = (id: string) => {
-    setCartState((prev) => {
-      const existing = prev[id];
-      if (!existing) return prev;
-
-      if (existing.quantity === 1) {
-        const { [id]: _, ...rest } = prev;
-        return rest;
-      }
-
-      return {
-        ...prev,
-        [id]: {
-          ...existing,
-          quantity: existing.quantity - 1
-        }
-      };
-    });
+  const decreaseProductQuantity = (productId: string) => {
+    setCartItems((prevCartItems) =>
+      prevCartItems
+        .map((cartItem) =>
+          cartItem.id === productId
+            ? {
+                ...cartItem,
+                quantity: cartItem.quantity - 1
+              }
+            : cartItem
+        )
+        .filter((cartItem) => cartItem.quantity > 0)
+    );
   };
 
-  const totalUnits = Object.values(cartState).reduce(
-    (acc, entry) => acc + entry.quantity,
-    0
-  );
+  const totalUnitsInCart = useMemo(() => {
+    return cartItems.reduce(
+      (total, cartItem) => total + cartItem.quantity,
+      0
+    );
+  }, [cartItems]);
 
-  const totalPrice = Object.values(cartState).reduce(
-    (acc, entry) => acc + entry.item.price * entry.quantity,
-    0
-  );
+  const totalCartPrice = useMemo(() => {
+    return cartItems.reduce(
+      (total, cartItem) =>
+        total + cartItem.price * cartItem.quantity,
+      0
+    );
+  }, [cartItems]);
 
   return {
-    cartState,
-    drawerOpen,
-    setDrawerOpen,
-    addItem,
-    incrementItem,
-    decrementItem,
-    totalUnits,
-    totalPrice
+    cartItems,
+    isCartDrawerOpen,
+    setIsCartDrawerOpen,
+    addProductToCart,
+    increaseProductQuantity,
+    decreaseProductQuantity,
+    totalUnitsInCart,
+    totalCartPrice
   };
 }

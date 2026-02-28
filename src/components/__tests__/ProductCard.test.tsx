@@ -9,31 +9,31 @@ const mockProduct = {
   image: ""
 };
 
-describe("ProductCard", () => {
+describe("ProductCard (array cart)", () => {
   test("renders Add to Cart when not in cart", () => {
     render(
       <ProductCard
         productUnit={mockProduct}
-        cartState={{}}
+        cartItems={[]}
         onAdd={jest.fn()}
-        onIncrement={jest.fn()}
-        onDecrement={jest.fn()}
+        onIncrease={jest.fn()}
+        onDecrease={jest.fn()}
       />
     );
 
     expect(screen.getByText("Add to Cart")).toBeInTheDocument();
   });
 
-  test("calls onAdd when Add button clicked", () => {
+  test("calls onAdd when clicked", () => {
     const mockHandler = jest.fn();
 
     render(
       <ProductCard
         productUnit={mockProduct}
-        cartState={{}}
+        cartItems={[]}
         onAdd={mockHandler}
-        onIncrement={jest.fn()}
-        onDecrement={jest.fn()}
+        onIncrease={jest.fn()}
+        onDecrease={jest.fn()}
       />
     );
 
@@ -45,15 +45,12 @@ describe("ProductCard", () => {
     render(
       <ProductCard
         productUnit={mockProduct}
-        cartState={{
-          "1": {
-            item: mockProduct,
-            quantity: 2
-          }
-        }}
+        cartItems={[
+          { ...mockProduct, quantity: 2 }
+        ]}
         onAdd={jest.fn()}
-        onIncrement={jest.fn()}
-        onDecrement={jest.fn()}
+        onIncrease={jest.fn()}
+        onDecrease={jest.fn()}
       />
     );
 

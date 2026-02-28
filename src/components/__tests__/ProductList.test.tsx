@@ -23,10 +23,10 @@ describe("ProductList", () => {
     render(
       <ProductList
         items={mockItems}
-        cartState={{}}
+        cartItems={[]}
         onAdd={jest.fn()}
-        onIncrement={jest.fn()}
-        onDecrement={jest.fn()}
+        onIncrease={jest.fn()}
+        onDecrease={jest.fn()}
       />
     );
 

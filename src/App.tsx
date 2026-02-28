@@ -1,49 +1,59 @@
 import Layout from "./components/Layout";
 import ProductList from "./components/ProductList";
+import ProductSkeleton from "./components/ProductSkeleton";
 import Cart from "./components/Cart";
 import { useProductsFeed } from "./hooks/useProducts";
 import { useCart } from "./hooks/useCart";
+
+const SKELETON_COUNT = 8;
 
 export default function App() {
   const { records, loadingState, errorState } = useProductsFeed();
 
   const {
-    cartState,
-    drawerOpen,
-    setDrawerOpen,
-    addItem,
-    incrementItem,
-    decrementItem,
-    totalUnits,
-    totalPrice
+    cartItems,
+    isCartDrawerOpen,
+    setIsCartDrawerOpen,
+    addProductToCart,
+    increaseProductQuantity,
+    decreaseProductQuantity,
+    totalUnitsInCart,
+    totalCartPrice
   } = useCart();
 
   return (
     <>
       <Layout
-        totalItems={totalUnits}
-        onCartClick={() => setDrawerOpen(true)}
+        totalItems={totalUnitsInCart}
+        onCartClick={() => setIsCartDrawerOpen(true)}
       >
-        {loadingState && <p>Loading...</p>}
+        {loadingState && (
+          <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 gap-6">
+            {Array.from({ length: SKELETON_COUNT }).map((_, i) => (
+              <ProductSkeleton key={i} />
+            ))}
+          </div>
+        )}
         {errorState && <p>{errorState}</p>}
+
         {!loadingState && !errorState && (
           <ProductList
             items={records}
-            cartState={cartState}
-            onAdd={addItem}
-            onIncrement={incrementItem}
-            onDecrement={decrementItem}
+            cartItems={cartItems}
+            onAdd={addProductToCart}
+            onIncrease={increaseProductQuantity}
+            onDecrease={decreaseProductQuantity}
           />
         )}
       </Layout>
 
       <Cart
-        openFlag={drawerOpen}
-        onCloseDrawer={() => setDrawerOpen(false)}
-        cartState={cartState}
-        totalPrice={totalPrice}
-        onIncrement={incrementItem}
-        onDecrement={decrementItem}
+        isOpen={isCartDrawerOpen}
+        onClose={() => setIsCartDrawerOpen(false)}
+        cartItems={cartItems}
+        totalPrice={totalCartPrice}
+        onIncrease={increaseProductQuantity}
+        onDecrease={decreaseProductQuantity}
       />
     </>
   );

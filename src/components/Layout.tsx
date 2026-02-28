@@ -3,35 +3,38 @@ import { ShoppingCart } from "lucide-react";
 
 interface Props {
   children: ReactNode;
-  onCartClick: () => void;
   totalItems: number;
+  onCartClick: () => void;
 }
 
-export default function Layout({ children, onCartClick, totalItems }: Props) {
+export default function Layout({
+  children,
+  totalItems,
+  onCartClick
+}: Props) {
   return (
     <div className="min-h-screen bg-white">
       <header
-        className="bg-header text-white px-6 py-4 flex justify-between items-center shadow-sm"
+        className="bg-secondary text-white px-6 py-4 flex justify-between"
         role="banner"
       >
-        <h1 className="text-lg font-semibold tracking-tight">
+        <h1 className="text-lg font-semibold flex items-center">
           Equal Experts Store
         </h1>
 
         <button
           type="button"
           onClick={onCartClick}
-          aria-label={`Open cart with ${totalItems} items`}
-          className="flex items-center gap-2 bg-header text-white px-4 py-2 rounded-md font-medium hover:opacity-90 transition-opacity"
+          className="bg-white text-primary px-4 py-2 rounded font-medium flex items-center gap-2"
         >
-          <ShoppingCart className="w-5 h-5" aria-hidden />
-          <span>Cart ({totalItems})</span>
+          <ShoppingCart size={20} />
+          Cart ({totalItems})
         </button>
       </header>
 
       <main
-        className="max-w-6xl mx-auto px-6 py-8"
         role="main"
+        className="mx-auto px-6 py-8"
       >
         {children}
       </main>

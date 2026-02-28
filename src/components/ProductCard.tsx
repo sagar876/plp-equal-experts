@@ -1,40 +1,42 @@
-import { ProductNode, CartRegistry } from "../types/product";
+import { ProductNode, CartItem } from "../types/product";
 
 interface Props {
   productUnit: ProductNode;
-  cartState: CartRegistry;
+  cartItems: CartItem[];
   onAdd: (item: ProductNode) => void;
-  onIncrement: (id: string) => void;
-  onDecrement: (id: string) => void;
+  onIncrease: (productId: string) => void;
+  onDecrease: (productId: string) => void;
 }
 
 export default function ProductCard({
   productUnit,
-  cartState,
+  cartItems,
   onAdd,
-  onIncrement,
-  onDecrement
+  onIncrease,
+  onDecrease
 }: Props) {
-  const existing = cartState[productUnit.id];
+  const existing = cartItems.find(
+    item => item.id === productUnit.id
+  );
 
   return (
-    <div className="border rounded-lg p-4 shadow-sm">
+    <div className="border rounded-lg p-4 shadow-sm flex flex-col h-full">
       <img
         src={productUnit.image}
         alt={productUnit.title}
-        className="w-full h-48 object-contain mb-4"
+        className="w-full h-48 object-contain mb-4 shrink-0"
       />
 
-      <h2 className="text-lg font-medium mb-2">
+      <h2 className="text-lg font-medium mb-2 shrink-0">
         {productUnit.title}
       </h2>
 
-      <p className="text-sm text-gray-600 mb-4">
+      <p className="text-sm text-gray-600 mb-4 flex-1 min-h-0">
         {productUnit.description}
       </p>
 
-      <div className="flex justify-between items-center">
-        <span className="text-brandRed font-semibold">
+      <div className="flex justify-between items-center shrink-0">
+        <span className="text-primary font-semibold">
           £{productUnit.price}
         </span>
 
@@ -42,7 +44,7 @@ export default function ProductCard({
           <button
             type="button"
             onClick={() => onAdd(productUnit)}
-            className="bg-brandRed text-white px-3 py-2 rounded"
+            className="bg-primary text-white px-3 py-2 rounded"
           >
             Add to Cart
           </button>
@@ -50,8 +52,7 @@ export default function ProductCard({
           <div className="flex items-center gap-3">
             <button
               type="button"
-              aria-label="Decrease quantity"
-              onClick={() => onDecrement(productUnit.id)}
+              onClick={() => onDecrease(productUnit.id)}
               className="px-3 py-1 border rounded"
             >
               -
@@ -61,8 +62,7 @@ export default function ProductCard({
 
             <button
               type="button"
-              aria-label="Increase quantity"
-              onClick={() => onIncrement(productUnit.id)}
+              onClick={() => onIncrease(productUnit.id)}
               className="px-3 py-1 border rounded"
             >
               +

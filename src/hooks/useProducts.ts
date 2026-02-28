@@ -7,21 +7,29 @@ export function useProductsFeed() {
   const [errorState, setErrorState] = useState<string | null>(null);
 
   useEffect(() => {
-    fetch("https://equalexperts.github.io/frontend-take-home-test-data/products.json") // goes into .env file
-      .then((res) => {
-        if (!res.ok) {
+    async function fetchProducts() {
+      try {
+        const response = await fetch(
+          "https://equalexperts.github.io/frontend-take-home-test-data/products.json"
+        );
+
+        if (!response.ok) {
           throw new Error("Failed to fetch products");
         }
-        return res.json();
-      })
-      .then((data) => {
+
+        const data: ProductNode[] = await response.json();
+        console.log('pavlo products', data);
+        
         setRecords(data);
-        setLoadingState(false);
-      })
-      .catch(() => {
+      } catch (error) {
+        console.error("Error fetching products:", error);
         setErrorState("Unable to load products.");
+      } finally {
         setLoadingState(false);
-      });
+      }
+    }
+
+    fetchProducts();
   }, []);
 
   return { records, loadingState, errorState };

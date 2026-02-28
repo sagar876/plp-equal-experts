@@ -6,9 +6,6 @@ export interface ProductNode {
     image: string;
   }
   
-  export interface CartEntry {
-    item: ProductNode;
+  export type CartItem = ProductNode & {
     quantity: number;
-  }
-  
-  export type CartRegistry = Record<string, CartEntry>;
+  };
