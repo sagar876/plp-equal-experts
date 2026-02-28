@@ -1,5 +1,5 @@
 import ProductCard from "./ProductCard";
-import { ProductNode, ProductListProps } from "../types/product";
+import { ProductListProps } from "../types/product";
 
 
 

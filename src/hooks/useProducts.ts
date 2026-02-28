@@ -18,8 +18,6 @@ export function useProductsFeed() {
         }
 
         const data: ProductNode[] = await response.json();
-        console.log('pavlo products', data);
-        
         setRecords(data);
       } catch (error) {
         console.error("Error fetching products:", error);
